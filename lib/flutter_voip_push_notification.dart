@@ -20,9 +20,9 @@ class NotificationSettings {
   });
 
   NotificationSettings._fromMap(Map<String, bool> settings)
-      : sound = settings['sound'],
-        alert = settings['alert'],
-        badge = settings['badge'];
+      : sound = settings['sound'] ?? false,
+        alert = settings['alert'] ?? false,
+        badge = settings['badge'] ?? false;
 
   final bool sound;
   final bool alert;
@@ -39,8 +39,8 @@ class NotificationSettings {
 
 class LocalNotification {
   const LocalNotification({
-    this.alertBody,
-    this.alertAction,
+    required this.alertBody,
+    required this.alertAction,
     this.soundName,
     this.category,
     this.userInfo,
@@ -54,13 +54,13 @@ class LocalNotification {
   final String alertAction;
 
   /// The sound played when the notification is fired (optional).
-  final String soundName;
+  final String? soundName;
 
   /// The category of this notification, required for actionable notifications (optional).
-  final String category;
+  final String? category;
 
   /// An optional object containing additional notification data.
-  final Map<String, dynamic> userInfo;
+  final Map<String, dynamic>? userInfo;
 
   @visibleForTesting
   Map<String, dynamic> toMap() {
@@ -89,9 +89,9 @@ class FlutterVoipPushNotification {
           const MethodChannel('com.peerwaya/flutter_voip_push_notification'));
 
   final MethodChannel _channel;
-  String _token;
-  MessageHandler _onMessage;
-  MessageHandler _onResume;
+  late String _token;
+  late MessageHandler _onMessage;
+  late MessageHandler _onResume;
 
 
   final StreamController<String> _tokenStreamController =
@@ -104,8 +104,8 @@ class FlutterVoipPushNotification {
 
   /// Sets up [MessageHandler] for incoming messages.
   void configure({
-    MessageHandler onMessage,
-    MessageHandler onResume,
+    required MessageHandler onMessage,
+    required MessageHandler onResume,
   }) {
     _onMessage = onMessage;
     _onResume = onResume;
@@ -133,7 +133,7 @@ class FlutterVoipPushNotification {
   }
 
   /// Returns the locally cached push token
-  Future<String> getToken() async {
+  Future<String?> getToken() async {
     return await _channel.invokeMethod<String>('getToken');
   }
 
