@@ -111,6 +111,7 @@ class FlutterVoipPushNotification {
     _onResume = onResume;
     _channel.setMethodCallHandler(_handleMethod);
     //_channel.invokeMethod<void>('configure');
+    _channel.invokeMethod<void>('configure');
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
